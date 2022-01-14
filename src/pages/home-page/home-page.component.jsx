@@ -1,11 +1,9 @@
 import React from "react";
 
+import MenuContainer from "../../components/menu-container/menu-container.component";
+
 const HomePage = () => {
-  return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
-  );
+  return <MenuContainer />;
 };
 
 export default HomePage;

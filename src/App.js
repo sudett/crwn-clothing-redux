@@ -8,6 +8,7 @@ import ShopPage from "./pages/shop-page/shop-page.component";
 import CollectionPage from "./pages/collection-page/collection-page.component";
 import SigninPage from "./pages/signin-page/signin-page.component";
 import CheckoutPage from "./pages/checkout-page/checkout-page.component";
+import ContactPage from "./pages/contact-page/contact-page.component";
 
 import "./App.css";
 
@@ -23,6 +24,7 @@ function App() {
         </Route>
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </>
   );

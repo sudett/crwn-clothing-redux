@@ -1,0 +1,20 @@
+.shopping__button {
+  position: relative;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.shopping__bag {
+  display: inline-block;
+  width: 3rem;
+}
+
+.shopping__quantity {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+}
