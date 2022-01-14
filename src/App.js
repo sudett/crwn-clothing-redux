@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+
+import Header from "./components/header/header.component";
+import HomePage from "./pages/home-page/home-page.component";
+import ShopLayout from "./pages/shop-layout/shop-layout.component";
+import ShopPage from "./pages/shop-page/shop-page.component";
+import CollectionPage from "./pages/collection-page/collection-page.component";
+import SigninPage from "./pages/signin-page/signin-page.component";
+import CheckoutPage from "./pages/checkout-page/checkout-page.component";
+
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/shop" element={<ShopLayout />}>
+          <Route index element={<ShopPage />} />
+          <Route path=":collectionSlug" element={<CollectionPage />} />
+        </Route>
+        <Route path="/signin" element={<SigninPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+      </Routes>
+    </>
   );
 }
 
