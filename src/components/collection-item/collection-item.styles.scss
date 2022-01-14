@@ -1,6 +1,15 @@
 .collection__item {
   position: relative;
   height: 35rem;
+
+  &:hover .collection__back-image {
+    opacity: 0.8;
+  }
+
+  &:hover .btn--cart {
+    display: block;
+    opacity: 0.85;
+  }
 }
 
 .collection__back-image {

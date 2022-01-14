@@ -11,6 +11,7 @@ import CheckoutPage from "./pages/checkout-page/checkout-page.component";
 import ContactPage from "./pages/contact-page/contact-page.component";
 
 import "./App.css";
+import "./global-styles.scss";
 
 function App() {
   return (

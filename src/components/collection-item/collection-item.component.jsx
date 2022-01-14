@@ -15,6 +15,7 @@ const CollectionItem = ({ item }) => {
         <p>{name}</p>
         <p>{price}</p>
       </div>
+      <button className="btn btn--inverted btn--cart">Add to cart</button>
     </div>
   );
 };
