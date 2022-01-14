@@ -1,0 +1,17 @@
+.collection__item {
+  position: relative;
+  height: 35rem;
+}
+
+.collection__back-image {
+  height: 95%;
+  background-size: cover;
+  background-position: top;
+}
+
+.collection__content {
+  display: flex;
+  justify-content: space-between;
+  height: 5%;
+  font-size: 2.2rem;
+}
