@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   text-transform: capitalize;
-  font-size: 1.7rem;
-  height: 20rem;
+  font-size: 1.5rem;
+  min-height: 10rem;
   padding: 1.5rem 0;
   border-bottom: 1px solid darkgray;
 
@@ -14,7 +14,7 @@
 
 .checkout__item-image {
   height: 95%;
-  // width: 90%;
+  width: 100%;
   padding-right: 3rem;
 }
 

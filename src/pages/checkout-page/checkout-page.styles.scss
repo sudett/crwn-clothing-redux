@@ -1,16 +1,24 @@
 .checkout__page {
   display: flex;
   flex-direction: column;
-  max-width: 70rem;
+  max-width: 55vw;
   min-height: 100vh;
-  margin: 2rem auto 3rem;
+  margin: 4rem auto 3rem;
+
+  @media only screen and (max-width: 50em) {
+    max-width: 80vw;
+  }
 }
 
 .checkout__title-container {
   display: flex;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid darkgray;
+
+  @media only screen and (max-width: 31.25em) {
+    font-size: 1.3rem;
+  }
 }
 
 .checkout__title-item:not(:last-of-type) {
@@ -23,14 +31,14 @@
 
 .checkout__total-price {
   align-self: flex-end;
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-transform: uppercase;
   padding-top: 5rem;
 }
 
 .checkout__test-message {
   color: red;
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1.5;
   text-align: center;
   margin: 6rem 0;

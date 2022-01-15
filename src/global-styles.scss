@@ -1,6 +1,6 @@
 .btn {
   display: inline-block;
-  min-width: 14rem;
+  min-width: 15rem;
   padding: 1.5rem 2rem;
   border: none;
   outline: none;
@@ -37,7 +37,8 @@
 .btn--cart {
   position: absolute;
   left: 50%;
-  bottom: 2%;
+  bottom: 5%;
+  width: 80%;
   transform: translate(-50%, -50%);
   opacity: 0.7;
   display: none;

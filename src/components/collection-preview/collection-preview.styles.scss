@@ -1,15 +1,23 @@
 .collection__preview {
-  margin: 0 5rem 6rem;
+  margin: 1rem 5rem 6rem;
 }
 
 .collection__title {
   font-size: 2.5rem;
   margin-bottom: 2.5rem;
   text-transform: uppercase;
+
+  &:hover {
+    color: grey;
+  }
+
+  @media only screen and (max-width: 56.25em) {
+    text-align: center;
+  }
 }
 
 .collection__items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
-  gap: 5rem;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 3rem;
 }

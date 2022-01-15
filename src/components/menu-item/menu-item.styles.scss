@@ -18,6 +18,22 @@
   grid-column: 4 / span 3;
 }
 
+@media only screen and (max-width: 37.5em) {
+  #section1,
+  #section3 {
+    grid-column: 1 / span 3;
+  }
+
+  #section2,
+  #section4 {
+    grid-column: 4 / -1;
+  }
+
+  #section5 {
+    grid-column: 1 / -1;
+  }
+}
+
 .menu__item {
   position: relative;
   height: 40vh;
@@ -34,10 +50,18 @@
   &:hover .menu__content {
     opacity: 0.9;
   }
+
+  @media only screen and (max-width: 37.5em) {
+    height: 40vh;
+  }
 }
 
 .large {
   height: 60vh;
+
+  @media only screen and (max-width: 50em) {
+    height: 40vh;
+  }
 }
 
 .menu__back-image {

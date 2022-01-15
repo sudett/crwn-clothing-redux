@@ -13,7 +13,7 @@
 }
 
 .collection__back-image {
-  height: 95%;
+  height: 93%;
   background-size: cover;
   background-position: top;
 }
@@ -21,6 +21,7 @@
 .collection__content {
   display: flex;
   justify-content: space-between;
-  height: 5%;
-  font-size: 2rem;
+  align-items: flex-end;
+  height: 7%;
+  font-size: 1.8rem;
 }

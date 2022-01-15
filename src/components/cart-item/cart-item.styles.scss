@@ -1,18 +1,24 @@
 .cart-item {
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: 2rem;
+  column-gap: 1.5rem;
   align-items: center;
   margin-bottom: 1rem;
+  padding-right: 1rem;
 }
 
-.item-img {
-  width: 7rem;
+.cart-item__img {
+  width: 5rem;
+  height: 7rem;
   object-fit: cover;
 }
 
-.item-details {
+.cart-item__details {
   display: flex;
   flex-direction: column;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+}
+
+.cart-item__name {
+  padding-bottom: 0.5rem;
 }

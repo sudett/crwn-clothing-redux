@@ -1,9 +1,9 @@
 .cart__dropdown {
   position: absolute;
-  top: 130%;
+  top: 140%;
   right: 0;
   width: 25rem;
-  height: 30rem;
+  height: 35rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +28,7 @@
 }
 
 .cart__empty {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 5rem;
 }

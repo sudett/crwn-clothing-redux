@@ -8,7 +8,11 @@
 
 .shopping__bag {
   display: inline-block;
-  width: 3rem;
+  width: 2.5rem;
+
+  @media only screen and (max-width: 31.25em) {
+    // width: 2rem;
+  }
 }
 
 .shopping__quantity {
@@ -16,5 +20,9 @@
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+
+  @media only screen and (max-width: 31.25em) {
+    // font-size: 1.1rem;
+  }
 }
