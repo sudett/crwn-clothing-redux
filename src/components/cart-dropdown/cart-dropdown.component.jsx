@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { selectCartItems } from "../../redux/cart/cart.selectors";
+import { toggleCart } from "../../redux/cart/cart.actions";
 
 import CartItem from "../cart-item/cart-item.component";
 
 import "./cart-dropdown.styles.scss";
 
-const CartDropdown = ({ cartItems }) => {
+const CartDropdown = ({ cartItems, toggleCart }) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +24,13 @@ const CartDropdown = ({ cartItems }) => {
           ))
         )}
       </div>
-      <button className="btn btn--black" onClick={() => navigate("/checkout")}>
+      <button
+        className="btn btn--black"
+        onClick={() => {
+          navigate("/checkout");
+          toggleCart();
+        }}
+      >
         Go to checkout
       </button>
     </div>
@@ -34,4 +41,8 @@ const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
 });
 
-export default connect(mapStateToProps)(CartDropdown);
+const mapDispatchToProps = (dispatch) => ({
+  toggleCart: () => dispatch(toggleCart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartDropdown);

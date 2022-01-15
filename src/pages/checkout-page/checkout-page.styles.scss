@@ -1,0 +1,37 @@
+.checkout__page {
+  display: flex;
+  flex-direction: column;
+  max-width: 70rem;
+  min-height: 100vh;
+  margin: 2rem auto 3rem;
+}
+
+.checkout__title-container {
+  display: flex;
+  font-size: 1.7rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid darkgray;
+}
+
+.checkout__title-item:not(:last-of-type) {
+  width: 23%;
+}
+
+.checkout__title-item:last-of-type {
+  width: 8%;
+}
+
+.checkout__total-price {
+  align-self: flex-end;
+  font-size: 3rem;
+  text-transform: uppercase;
+  padding-top: 5rem;
+}
+
+.checkout__test-message {
+  color: red;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 6rem 0;
+}

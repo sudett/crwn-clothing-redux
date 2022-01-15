@@ -1,0 +1,42 @@
+.checkout__item {
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+  font-size: 1.7rem;
+  height: 20rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid darkgray;
+
+  & > *:not(:last-child) {
+    width: 23%;
+  }
+}
+
+.checkout__item-image {
+  height: 95%;
+  // width: 90%;
+  padding-right: 3rem;
+}
+
+.checkout__item-quantity {
+  padding: 0 1rem;
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+}
+
+.btn-remove {
+  width: 8%;
+}
+
+.btn-remove,
+.btn-increase,
+.btn-decrease {
+  border: none;
+  outline: none;
+  font-size: 2rem;
+  background: transparent;
+  cursor: pointer;
+}
