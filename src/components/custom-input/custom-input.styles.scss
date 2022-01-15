@@ -1,0 +1,40 @@
+@mixin shrink-label {
+  transform: translateY(-2rem);
+  font-size: 1rem;
+  color: #000;
+}
+
+.custom-input {
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.form__input {
+  display: block;
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #777;
+  padding: 1rem 0.5rem;
+  font-size: 1.7rem;
+  color: #777;
+  width: 100%;
+}
+
+.form__input:focus + .form__label {
+  @include shrink-label();
+}
+
+.form__label {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 1.5rem;
+  color: #555;
+  text-transform: capitalize;
+  transition: all 0.2s;
+}
+
+.shrink {
+  @include shrink-label;
+}

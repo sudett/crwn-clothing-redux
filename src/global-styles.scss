@@ -1,20 +1,20 @@
 .btn {
   display: inline-block;
-  min-width: 16rem;
-  width: auto;
-  padding: 2rem 1rem;
+  min-width: 14rem;
+  padding: 1.5rem 2rem;
   border: none;
   outline: none;
   color: #fff;
   text-transform: uppercase;
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-weight: bolder;
+  font-size: 1.3rem;
   font-family: inherit;
   cursor: pointer;
 }
 
 .btn--black {
   background-color: #000;
+  border: 1px solid transparent;
 
   &:hover {
     color: #000;
@@ -41,4 +41,12 @@
   transform: translate(-50%, -50%);
   opacity: 0.7;
   display: none;
+}
+
+.btn--blue {
+  background-color: #4285f4;
+
+  &:hover {
+    background-color: #357ae8;
+  }
 }
