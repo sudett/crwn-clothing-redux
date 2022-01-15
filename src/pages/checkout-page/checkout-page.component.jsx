@@ -1,13 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { selectCartItems } from "../../redux/cart/cart.selectors";
+import {
+  selectCartItems,
+  selectTotalPrice,
+} from "../../redux/cart/cart.selectors";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
 import "./checkout-page.styles.scss";
 
-const CheckoutPage = ({ cartItems }) => (
+const CheckoutPage = ({ cartItems, totalPrice }) => (
   <div className="checkout__page">
     <div className="checkout__title-container">
       <div className="checkout__title-item">Product</div>
@@ -19,7 +22,7 @@ const CheckoutPage = ({ cartItems }) => (
     {cartItems.map((cartItem) => (
       <CheckoutItem key={cartItem.id} cartItem={cartItem} />
     ))}
-    <p className="checkout__total-price">Total: 0</p>
+    <p className="checkout__total-price">Total: ${totalPrice}</p>
     <p className="checkout__test-message">
       *Please use the following test credit card for payment*
       <br />
@@ -30,6 +33,7 @@ const CheckoutPage = ({ cartItems }) => (
 
 const mapStateToProps = (state) => ({
   cartItems: selectCartItems(state),
+  totalPrice: selectTotalPrice(state),
 });
 
 export default connect(mapStateToProps)(CheckoutPage);
