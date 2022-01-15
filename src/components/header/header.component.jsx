@@ -13,7 +13,6 @@ import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
 
 const Header = ({ isCartOpen }) => {
-  console.log(isCartOpen);
   return (
     <header className="header">
       <Link to="/">

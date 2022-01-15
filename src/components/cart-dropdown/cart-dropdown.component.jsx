@@ -1,24 +1,37 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+
+import { selectCartItems } from "../../redux/cart/cart.selectors";
+
+import CartItem from "../cart-item/cart-item.component";
 
 import "./cart-dropdown.styles.scss";
 
-const CartDropdown = () => {
+const CartDropdown = ({ cartItems }) => {
   const navigate = useNavigate();
 
   return (
     <div className="cart__dropdown">
       <div className="cart__items">
-        <span className="cart__empty">Your cart is empty</span>
+        {cartItems.length === 0 ? (
+          <span className="cart__empty">Your cart is empty</span>
+        ) : (
+          cartItems.map((cartItem) => (
+            <CartItem key={cartItem.id} {...cartItem} />
+          ))
+        )}
       </div>
-      <button
-        className="btn btn--inverted"
-        onClick={() => navigate("/checkout")}
-      >
+      <button className="btn btn--black" onClick={() => navigate("/checkout")}>
         Go to checkout
       </button>
     </div>
   );
 };
 
-export default CartDropdown;
+const mapStateToProps = createStructuredSelector({
+  cartItems: selectCartItems,
+});
+
+export default connect(mapStateToProps)(CartDropdown);

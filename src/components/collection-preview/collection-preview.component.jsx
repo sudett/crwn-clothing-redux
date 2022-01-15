@@ -11,7 +11,7 @@ const CollectionPreview = ({ title, items, routeName }) => {
   return (
     <div className="collection__preview">
       <Link to={`${pathname}/${routeName}`}>
-        <h3 className="collection__title">{title}</h3>
+        <h2 className="collection__title">{title}</h2>
       </Link>
       <div className="collection__items">
         {items
