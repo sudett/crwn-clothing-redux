@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import { signout } from "../../firebase/firebase.utils";
+
 import { selectIsCartOpen } from "../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
 import ShoppingIcon from "../shopping-icon/shopping-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
@@ -12,7 +15,7 @@ import { ReactComponent as Logo } from "../../assets/crown.svg";
 
 import "./header.styles.scss";
 
-const Header = ({ isCartOpen }) => {
+const Header = ({ isCartOpen, currentUser }) => {
   return (
     <header className="header">
       <Link to="/">
@@ -27,7 +30,13 @@ const Header = ({ isCartOpen }) => {
             <Link to="/contact">Contact</Link>
           </li>
           <li className="nav__item">
-            <Link to="/signin">Sign in</Link>
+            {currentUser ? (
+              <button className="btn-signout" onClick={signout}>
+                Sign out
+              </button>
+            ) : (
+              <Link to="/signin">Sign in</Link>
+            )}
           </li>
           <li className="nav__item">
             <ShoppingIcon />
@@ -41,6 +50,7 @@ const Header = ({ isCartOpen }) => {
 
 const mapStateToProps = createStructuredSelector({
   isCartOpen: selectIsCartOpen,
+  currentUser: selectCurrentUser,
 });
 
 export default connect(mapStateToProps)(Header);

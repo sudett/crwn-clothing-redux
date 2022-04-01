@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { auth } from "./firebase/firebase.utils";
+
+import { setCurrentUser } from "./redux/user/user.actions";
 
 import Header from "./components/header/header.component";
 import HomePage from "./pages/home-page/home-page.component";
@@ -13,7 +18,17 @@ import ContactPage from "./pages/contact-page/contact-page.component";
 import "./App.css";
 import "./global-styles.scss";
 
-function App() {
+function App({ setCurrentUser }) {
+  useEffect(() => {
+    // Getting auth state changes using subscription provided by firebase
+    const unSubscribeFromAuth = auth.onAuthStateChanged((userAuth) => {
+      setCurrentUser(userAuth);
+    });
+
+    // Close subscription to prevent memory leaks
+    return () => unSubscribeFromAuth();
+  }, [setCurrentUser]);
+
   return (
     <>
       <Header />
@@ -31,4 +46,8 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);

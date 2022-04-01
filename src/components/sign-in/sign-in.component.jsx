@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { signInWithGoogle } from "../../firebase/firebase.utils";
+
 import CustomInput from "../custom-input/custom-input.component";
 
 import "./sign-in.styles.scss";
@@ -12,6 +14,8 @@ const SignIn = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    setUserCredentials({ email: "", password: "" });
   };
 
   const changeHandler = (e) => {
@@ -46,7 +50,11 @@ const SignIn = () => {
           <button className="btn btn--black" type="submit">
             Sign in
           </button>
-          <button className="btn btn--blue" type="button">
+          <button
+            className="btn btn--blue"
+            type="button"
+            onClick={signInWithGoogle}
+          >
             Sign in with google
           </button>
         </div>
