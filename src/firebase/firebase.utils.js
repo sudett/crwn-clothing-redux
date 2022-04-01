@@ -4,7 +4,17 @@ import {
   getAuth,
   signInWithPopup,
   signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD8vlwlrRoQPAe6BiM3-Xyh7LtJeGdMI2g",
@@ -41,3 +51,43 @@ export const signout = () =>
       const { code, message } = err;
       console.error(`${message} (${code})`);
     });
+
+// Store user data in firestore
+const db = getFirestore();
+
+export const createUserProfile = async (userAuth, additionalData) => {
+  // If there is no userAuth (signed out user), no need to create profile
+  if (!userAuth) return;
+
+  // Get user reference(location) in database
+  const userRef = doc(db, "users", userAuth.uid);
+
+  try {
+    // Get snapshot(data) in the user reference
+    const userSnapshot = await getDoc(userRef);
+
+    // Save user in database if we didn't save before
+    if (!userSnapshot.exists()) {
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+
+      await setDoc(userRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return userRef;
+};
+
+const firebase = {
+  onSnapshot,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+};
+export default firebase;

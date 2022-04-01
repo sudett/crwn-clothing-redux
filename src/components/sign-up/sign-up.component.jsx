@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 
+import firebase, {
+  auth,
+  createUserProfile,
+} from "../../firebase/firebase.utils";
+
 import CustomInput from "../custom-input/custom-input.component";
 
 import "./sign-up.styles.scss";
@@ -12,16 +17,39 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  const { displayName, email, password, confirmPassword } = userCredentials;
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  };
 
-  const { displayName, email, password, confirmPassword } = userCredentials;
+    if (password !== confirmPassword) {
+      return alert("Passwords don't match");
+    }
+
+    try {
+      firebase
+        .createUserWithEmailAndPassword(auth, email, password)
+        .then(async ({ user }) => {
+          await createUserProfile(user, { displayName });
+
+          // Clear form
+          setUserCredentials({
+            displayName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          });
+        })
+        .catch(({ message, code }) => console.log(`${message} (${code})`));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="signup">

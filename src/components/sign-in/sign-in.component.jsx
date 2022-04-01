@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import firebase, {
+  signInWithGoogle,
+  auth,
+} from "../../firebase/firebase.utils";
 
 import CustomInput from "../custom-input/custom-input.component";
 
@@ -12,9 +15,18 @@ const SignIn = () => {
     password: "",
   });
 
+  const { email, password } = userCredentials;
+
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // Sign in with email
+    firebase
+      .signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => console.log("sign in with email"))
+      .catch(({ message, code }) => console.log(`${message} (${code})`));
+
+    // Clear form
     setUserCredentials({ email: "", password: "" });
   };
 
@@ -22,8 +34,6 @@ const SignIn = () => {
     const { name, value } = e.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
-
-  const { email, password } = userCredentials;
 
   return (
     <div className="signin">

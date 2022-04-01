@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { auth } from "./firebase/firebase.utils";
+import firebase, { auth, createUserProfile } from "./firebase/firebase.utils";
 
 import { setCurrentUser } from "./redux/user/user.actions";
 
@@ -20,9 +20,20 @@ import "./global-styles.scss";
 
 function App({ setCurrentUser }) {
   useEffect(() => {
-    // Getting auth state changes using subscription provided by firebase
-    const unSubscribeFromAuth = auth.onAuthStateChanged((userAuth) => {
-      setCurrentUser(userAuth);
+    // Get auth state changes using subscription provided by firebase
+    const unSubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (!userAuth) return setCurrentUser(userAuth);
+
+      // Store user in db
+      const userRef = await createUserProfile(userAuth);
+
+      // Store user in app
+      firebase.onSnapshot(userRef, (snapshot) => {
+        setCurrentUser({
+          id: snapshot.id,
+          ...snapshot.data(),
+        });
+      });
     });
 
     // Close subscription to prevent memory leaks
