@@ -13,6 +13,8 @@ import {
   doc,
   getDoc,
   setDoc,
+  collection,
+  writeBatch,
   onSnapshot,
 } from "firebase/firestore";
 
@@ -83,6 +85,28 @@ export const createUserProfile = async (userAuth, additionalData) => {
   }
 
   return userRef;
+};
+
+// Store data in firestore
+export const addCollectionAndDocuments = async (
+  collectionName,
+  collectionDocuments
+) => {
+  const collectionRef = collection(db, collectionName);
+
+  //create batch for storing multiple documents at once
+  const batch = writeBatch(db);
+
+  collectionDocuments.forEach((document) => {
+    //create new reference with unique key, in db for document
+    const newDocRef = doc(collectionRef);
+
+    //store document in created reference
+    batch.set(newDocRef, document);
+  });
+
+  //write documents in collection
+  return await batch.commit();
 };
 
 const firebase = {

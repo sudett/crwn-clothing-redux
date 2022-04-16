@@ -10,12 +10,21 @@
   & > *:not(:last-child) {
     width: 23%;
   }
+
+  @media only screen and (max-width: 31.25em) {
+    padding: 1rem 0;
+  }
 }
 
 .checkout__item-image {
   height: 95%;
   width: 100%;
   padding-right: 3rem;
+
+  @media only screen and (max-width: 31.25em) {
+    padding-right: 1.5rem;
+    height: 100%;
+  }
 }
 
 .checkout__item-quantity {
