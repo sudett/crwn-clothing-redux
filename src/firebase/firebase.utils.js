@@ -12,6 +12,7 @@ import {
   getFirestore,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   collection,
   writeBatch,
@@ -136,5 +137,6 @@ const firebase = {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   collection,
+  getDocs,
 };
 export default firebase;
