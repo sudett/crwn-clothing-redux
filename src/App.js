@@ -2,15 +2,10 @@ import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
-import firebase, {
-  auth,
-  createUserProfile,
-  addCollectionAndDocuments,
-} from "./firebase/firebase.utils";
+import firebase, { auth, createUserProfile } from "./firebase/firebase.utils";
 
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
-import { selectCollectionsForShop } from "./redux/shop/shop.selectors";
 
 import Header from "./components/header/header.component";
 import HomePage from "./pages/home-page/home-page.component";
@@ -74,7 +69,6 @@ function App({ setCurrentUser, currentUser }) {
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
-  collections: selectCollectionsForShop(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

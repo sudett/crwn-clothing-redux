@@ -55,7 +55,7 @@ export const signout = () =>
     });
 
 // Store user data in firestore
-const db = getFirestore();
+export const db = getFirestore();
 
 export const createUserProfile = async (userAuth, additionalData) => {
   // If there is no userAuth (signed out user), no need to create profile
@@ -109,9 +109,32 @@ export const addCollectionAndDocuments = async (
   return await batch.commit();
 };
 
+// Convert snapshots array into object
+export const convertSnapshotToObj = (snapshot) => {
+  const transformedSnapshot = snapshot.docs.map((doc) => {
+    //getting actual data in snapshot
+    const { title, items } = doc.data();
+
+    //add routeName and id to objects
+    return {
+      title,
+      items,
+      routeName: title.toLowerCase(),
+      id: doc.id,
+    };
+  });
+
+  //final object required in frontend
+  return transformedSnapshot.reduce((acc, item) => {
+    acc[item.title.toLowerCase()] = item;
+    return acc;
+  }, {});
+};
+
 const firebase = {
   onSnapshot,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  collection,
 };
 export default firebase;
