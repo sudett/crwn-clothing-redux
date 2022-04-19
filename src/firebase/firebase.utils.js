@@ -32,7 +32,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 // Sign in with google
-const googleProvider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({ propmt: "select_account" });
 
@@ -132,11 +132,23 @@ export const convertSnapshotToObj = (snapshot) => {
   }, {});
 };
 
+// Get current user state using promise pattern (this will be cunsuming by saga)
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribeFromAuth = auth.onAuthStateChanged((userAuth) => {
+      unsubscribeFromAuth();
+      resolve(userAuth);
+    }, reject);
+  });
+};
+
 const firebase = {
   onSnapshot,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   collection,
   getDocs,
+  getDoc,
 };
 export default firebase;

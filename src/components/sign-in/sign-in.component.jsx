@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
-import firebase, {
-  signInWithGoogle,
-  auth,
-} from "../../firebase/firebase.utils";
+import {
+  googleSigninStart,
+  emailSigninStart,
+} from "../../redux/user/user.actions";
 
 import CustomInput from "../custom-input/custom-input.component";
 
 import "./sign-in.styles.scss";
 
-const SignIn = () => {
+const SignIn = ({ googleSigninStart, emailSigninStart }) => {
   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
@@ -21,10 +22,13 @@ const SignIn = () => {
     e.preventDefault();
 
     // Sign in with email
-    firebase
-      .signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => console.log("sign in with email"))
-      .catch(({ message, code }) => console.log(`${message} (${code})`));
+    emailSigninStart({ email, password });
+
+    //handle this part in saga
+    // firebase
+    //   .signInWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => console.log("sign in with email"))
+    //   .catch(({ message, code }) => console.log(`${message} (${code})`));
 
     // Clear form
     setUserCredentials({ email: "", password: "" });
@@ -63,7 +67,8 @@ const SignIn = () => {
           <button
             className="btn btn--blue"
             type="button"
-            onClick={signInWithGoogle}
+            // onClick={signInWithGoogle}
+            onClick={googleSigninStart}
           >
             Sign in with google
           </button>
@@ -73,4 +78,9 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+const mapDispatchToProps = (dispatch) => ({
+  googleSigninStart: () => dispatch(googleSigninStart()),
+  emailSigninStart: (emailAndPass) => dispatch(emailSigninStart(emailAndPass)),
+});
+
+export default connect(null, mapDispatchToProps)(SignIn);
