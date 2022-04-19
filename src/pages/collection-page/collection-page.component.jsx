@@ -7,14 +7,14 @@ import {
   selectIsLoading,
 } from "../../redux/shop/shop.selectors";
 
-import { fecthCollectionsAsync } from "../../redux/shop/shop.actions";
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 
 import CollectionItem from "../../components/collection-item/collection-item.component";
 import Spinner from "../../components/spinner/spinner.component";
 
 import "./collection-page.styles.scss";
 
-const CollectionPage = ({ collections, isLoading, fecthCollectionsAsync }) => {
+const CollectionPage = ({ collections, isLoading, fetchCollectionsStart }) => {
   const { collectionSlug } = useParams();
   const [collection, setCollection] = useState(null);
 
@@ -44,9 +44,14 @@ const CollectionPage = ({ collections, isLoading, fecthCollectionsAsync }) => {
   // }, [getCollections, toggleLoading, collections]);
 
   //2. Thunk
+  // useEffect(() => {
+  //   fecthCollectionsAsync();
+  // }, [fecthCollectionsAsync]);
+
+  //3. Saga
   useEffect(() => {
-    fecthCollectionsAsync();
-  }, [fecthCollectionsAsync]);
+    fetchCollectionsStart();
+  }, [fetchCollectionsStart]);
 
   useEffect(() => {
     collections && setCollection(collections[collectionSlug]);
@@ -78,7 +83,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // getCollections: (collections) => dispatch(getCollections(collections)),
   // toggleLoading: () => dispatch(toggleLoading()),
-  fecthCollectionsAsync: () => dispatch(fecthCollectionsAsync()),
+  // fecthCollectionsAsync: () => dispatch(fecthCollectionsAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionPage);

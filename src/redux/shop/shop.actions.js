@@ -14,16 +14,17 @@ import firebase, {
 //   type: shopActionTypes.TOGGLE_LOADING,
 // });
 
-const fetchCollectionsStart = () => ({
+// Thunk
+export const fetchCollectionsStart = () => ({
   type: shopActionTypes.FETCH_COLLECTIONS_START,
 });
 
-const fetchCollectionsSuccess = (collections) => ({
+export const fetchCollectionsSuccess = (collections) => ({
   type: shopActionTypes.FETCH_COLLECTIONS_SUCCESS,
   payload: collections,
 });
 
-const fetchCollectionsFailure = (errorMessage) => ({
+export const fetchCollectionsFailure = (errorMessage) => ({
   type: shopActionTypes.FETCH_COLLECTIONS_FAILURE,
   payload: errorMessage,
 });

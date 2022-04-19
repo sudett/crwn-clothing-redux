@@ -7,12 +7,12 @@ import {
   selectIsLoading,
 } from "../../redux/shop/shop.selectors";
 
-import { fecthCollectionsAsync } from "../../redux/shop/shop.actions";
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 
 import CollectionPreview from "../../components/collection-preview/collection-preview.component";
 import Spinner from "../../components/spinner/spinner.component";
 
-const ShopPage = ({ collections, fecthCollectionsAsync, isLoading }) => {
+const ShopPage = ({ collections, fetchCollectionsStart, isLoading }) => {
   //1. Firebase observer/observable pattern
   // useEffect(() => {
   //   toggleLoading();
@@ -38,9 +38,14 @@ const ShopPage = ({ collections, fecthCollectionsAsync, isLoading }) => {
   // }, [getCollections, toggleLoading]);
 
   //2. Thunk
+  // useEffect(() => {
+  //   fecthCollectionsAsync();
+  // }, [fecthCollectionsAsync]);
+
+  //3. Saga
   useEffect(() => {
-    fecthCollectionsAsync();
-  }, [fecthCollectionsAsync]);
+    fetchCollectionsStart();
+  }, [fetchCollectionsStart]);
 
   return (
     <>
@@ -61,9 +66,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // getCollections: (collections) => dispatch(getCollections(collections)),
-  // toggleLoading: () => dispatch(toggleLoading()),
-  fecthCollectionsAsync: () => dispatch(fecthCollectionsAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
