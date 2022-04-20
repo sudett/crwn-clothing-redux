@@ -150,5 +150,6 @@ const firebase = {
   collection,
   getDocs,
   getDoc,
+  signOut,
 };
 export default firebase;

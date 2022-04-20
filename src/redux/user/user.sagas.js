@@ -1,7 +1,14 @@
 import { takeLatest, put, all, call } from "redux-saga/effects";
 
 import { userActionTypes } from "./user.types";
-import { signinSuccess, signinFailure } from "./user.actions";
+import {
+  signinSuccess,
+  signinFailure,
+  signoutSuccess,
+  signoutFailure,
+  signupSuccess,
+  signupFailure,
+} from "./user.actions";
 
 import firebase, {
   auth,
@@ -76,10 +83,60 @@ function* onCheckUserSession() {
   yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
 
-export function* userSagas() {
+// Sign out
+function* signout() {
+  try {
+    yield firebase.signOut(auth);
+
+    yield put(signoutSuccess());
+  } catch (err) {
+    yield put(signoutFailure(err));
+  }
+}
+
+function* onSignoutStart() {
+  yield takeLatest(userActionTypes.SIGNOUT_START, signout);
+}
+
+// Sign up
+function* signup({ payload: { email, password, displayName } }) {
+  try {
+    const { userAuth } = yield firebase.createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const userRef = yield call(createUserProfile, userAuth, { displayName });
+
+    const userSnapshot = yield getDoc(userRef);
+
+    yield put(signupSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
+  } catch (err) {
+    yield put(signupFailure(err));
+  }
+}
+
+function* onSignupStart() {
+  yield takeLatest(userActionTypes.SIGNUP_START, signup);
+}
+
+// Signin user after registeration
+function* signinAfterSignup({ user }) {
+  yield put(signinSuccess(user));
+}
+
+function* onSignupSuccess() {
+  yield takeLatest(userActionTypes.SIGNUP_SUCCESS, signinAfterSignup);
+}
+
+export default function* userSagas() {
   yield all([
     call(onGoogleSigninStart),
     call(onEmailSigninStart),
     call(onCheckUserSession),
+    call(onSignoutStart),
+    call(onSignupStart),
+    call(onSignupSuccess),
   ]);
 }

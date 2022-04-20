@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put, all } from "redux-saga/effects";
 
 import firebase, {
   convertSnapshotToObj,
@@ -11,6 +11,8 @@ import {
 } from "../../redux/shop/shop.actions";
 
 import shopActionTypes from "./shop.types";
+
+///////////////////////////////////////
 
 function* fetchCollectionsAsync() {
   try {
@@ -26,9 +28,13 @@ function* fetchCollectionsAsync() {
   }
 }
 
-export function* fetchCollectionsStart() {
+function* fetchCollectionsStart() {
   yield takeLatest(
     shopActionTypes.FETCH_COLLECTIONS_START,
     fetchCollectionsAsync
   );
+}
+
+export default function* shopSagas() {
+  yield all([call(fetchCollectionsStart)])
 }

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
-import firebase, {
-  auth,
-  createUserProfile,
-} from "../../firebase/firebase.utils";
+import { signupStart } from "../../redux/user/user.actions";
 
 import CustomInput from "../custom-input/custom-input.component";
 
 import "./sign-up.styles.scss";
 
-const SignUp = () => {
+const SignUp = ({ signupStart }) => {
   const [userCredentials, setUserCredentials] = useState({
     displayName: "",
     email: "",
@@ -19,11 +17,13 @@ const SignUp = () => {
 
   const { displayName, email, password, confirmPassword } = userCredentials;
 
+  // change handler
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
+  // submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,24 +31,27 @@ const SignUp = () => {
       return alert("Passwords don't match");
     }
 
-    try {
-      firebase
-        .createUserWithEmailAndPassword(auth, email, password)
-        .then(async ({ user }) => {
-          await createUserProfile(user, { displayName });
+    signupStart({ email, password, displayName });
 
-          // Clear form
-          setUserCredentials({
-            displayName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          });
-        })
-        .catch(({ message, code }) => console.log(`${message} (${code})`));
-    } catch (err) {
-      console.error(err);
-    }
+    // handle this part with saga
+    // try {
+    //   firebase
+    //     .createUserWithEmailAndPassword(auth, email, password)
+    //     .then(async ({ user }) => {
+    //       await createUserProfile(user, { displayName });
+
+    //       // Clear form
+    //       setUserCredentials({
+    //         displayName: "",
+    //         email: "",
+    //         password: "",
+    //         confirmPassword: "",
+    //       });
+    //     })
+    //     .catch(({ message, code }) => console.log(`${message} (${code})`));
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   return (
@@ -95,4 +98,8 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signupStart: (credentials) => dispatch(signupStart(credentials)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);
