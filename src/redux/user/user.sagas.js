@@ -99,15 +99,16 @@ function* onSignoutStart() {
 }
 
 // Sign up
-function* signup({ payload: { email, password, displayName } }) {
+function* signup({ payload: { displayName, email, password } }) {
+  console.log(displayName, email, password);
   try {
-    const { userAuth } = yield firebase.createUserWithEmailAndPassword(
+    const { user } = yield firebase.createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
 
-    const userRef = yield call(createUserProfile, userAuth, { displayName });
+    const userRef = yield call(createUserProfile, user, { displayName });
 
     const userSnapshot = yield getDoc(userRef);
 
