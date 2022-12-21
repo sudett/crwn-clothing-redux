@@ -54,7 +54,8 @@ const CollectionPage = ({ collections, isLoading, fetchCollectionsStart }) => {
   }, [fetchCollectionsStart]);
 
   useEffect(() => {
-    collections && setCollection(collections[collectionSlug]);
+    collections &&
+      setCollection(collections.find((item) => item.title === collectionSlug));
   }, [collections, collectionSlug]);
 
   return (

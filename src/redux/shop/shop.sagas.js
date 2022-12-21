@@ -1,9 +1,6 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
 
-import firebase, {
-  convertSnapshotToObj,
-  db,
-} from "../../firebase/firebase.utils";
+import supabase from "../../supabase/supabase";
 
 import {
   fetchCollectionsSuccess,
@@ -16,13 +13,17 @@ import shopActionTypes from "./shop.types";
 
 function* fetchCollectionsAsync() {
   try {
-    const shopRef = firebase.collection(db, "shop");
+    // firebase
+    // const shopRef = firebase.collection(db, "shop");
 
-    const snapshot = yield firebase.getDocs(shopRef);
+    // const snapshot = yield firebase.getDocs(shopRef);
 
-    const shopObj = yield call(convertSnapshotToObj, snapshot);
+    // const shopObj = yield call(convertSnapshotToObj, snapshot);
 
-    yield put(fetchCollectionsSuccess(shopObj));
+    // supabase
+    const { data } = yield supabase.from("shopping items").select();
+
+    yield put(fetchCollectionsSuccess(data));
   } catch (err) {
     yield put(fetchCollectionsFailure(err.message));
   }
@@ -36,5 +37,5 @@ function* fetchCollectionsStart() {
 }
 
 export default function* shopSagas() {
-  yield all([call(fetchCollectionsStart)])
+  yield all([call(fetchCollectionsStart)]);
 }

@@ -10,34 +10,38 @@ import {
   signupFailure,
 } from "./user.actions";
 
-import firebase, {
-  auth,
-  googleProvider,
-  createUserProfile,
-  getCurrentUser,
-} from "../../firebase/firebase.utils";
-import { getDoc } from "@firebase/firestore";
+import supabase from "../../supabase/supabase";
 
 ////////////////////////////
 
-function* getSnapshotFromUserAuth(userAuth) {
-  try {
-    const userRef = yield call(createUserProfile, userAuth);
+// function* getSnapshotFromUserAuth(userAuth) {
+//   try {
+//     const userRef = yield call(createUserProfile, userAuth);
 
-    const userSnapshot = yield getDoc(userRef);
+//     const userSnapshot = yield getDoc(userRef);
 
-    yield put(signinSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
-  } catch (err) {
-    yield put(signinFailure(err));
-  }
-}
+//     yield put(signinSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
+//   } catch (err) {
+//     yield put(signinFailure(err));
+//   }
+// }
 
 // Google sign in
 function* googleSignIn() {
   try {
-    const { user } = yield firebase.signInWithPopup(auth, googleProvider);
+    // firebase
+    // const { user } = yield firebase.signInWithPopup(auth, googleProvider);
 
-    yield getSnapshotFromUserAuth(user);
+    // yield getSnapshotFromUserAuth(user);
+
+    // supabase
+    const { data, error } = yield supabase.auth.signInWithOAuth({
+      provider: "github",
+    });
+
+    if (error) throw error;
+
+    yield put(signinSuccess(data));
   } catch (err) {
     yield put(signinFailure(err));
   }
@@ -50,13 +54,24 @@ function* onGoogleSigninStart() {
 // Email sign in
 function* emailSignin({ payload: { email, password } }) {
   try {
-    const { user } = yield firebase.signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    // firebase
+    // const { user } = yield firebase.signInWithEmailAndPassword(
+    //   auth,
+    //   email,
+    //   password
+    // );
 
-    yield getSnapshotFromUserAuth(user);
+    // yield getSnapshotFromUserAuth(user);
+
+    // supabase
+    const { data, error } = yield supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) throw error;
+
+    yield put(signinSuccess(data));
   } catch (err) {
     yield put(signinFailure(err));
   }
@@ -67,26 +82,46 @@ function* onEmailSigninStart() {
 }
 
 // Chcek user session
-function* isUserAuthenticated() {
+// function* isUserAuthenticated() {
+//   try {
+//     // firebase
+//     // const userAuth = yield getCurrentUser();
+//     // if (!userAuth) return;
+//     // yield getSnapshotFromUserAuth(userAuth);
+//     // yield put(signinSuccess(userAuth));
+
+//   } catch (err) {
+//     yield put(signinFailure(err));
+//   }
+// }
+
+// function* onCheckUserSession() {
+//   yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+// }
+
+// Check current user
+function* setAuthenticatedUser({ payload }) {
   try {
-    const userAuth = yield getCurrentUser();
-
-    if (!userAuth) return;
-
-    yield getSnapshotFromUserAuth(userAuth);
-  } catch (err) {
-    yield put(signinFailure(err));
+    if (!payload || !payload.user) return;
+    yield put(signinSuccess(payload.user));
+  } catch (error) {
+    yield put(signinFailure(error));
   }
 }
 
-function* onCheckUserSession() {
-  yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+function* onCheckCurrentUser() {
+  yield takeLatest(userActionTypes.SET_CURRENT_USER, setAuthenticatedUser);
 }
 
 // Sign out
 function* signout() {
   try {
-    yield firebase.signOut(auth);
+    // firebase
+    // yield firebase.signOut(auth);
+    // yield put(signoutSuccess());
+
+    // supabase
+    yield supabase.auth.signOut();
 
     yield put(signoutSuccess());
   } catch (err) {
@@ -100,19 +135,38 @@ function* onSignoutStart() {
 
 // Sign up
 function* signup({ payload: { displayName, email, password } }) {
-  console.log(displayName, email, password);
   try {
-    const { user } = yield firebase.createUserWithEmailAndPassword(
-      auth,
+    // firebase
+    // const { user } = yield firebase.createUserWithEmailAndPassword(
+    //   auth,
+    //   email,
+    //   password
+    // );
+
+    // const userRef = yield call(createUserProfile, user, { displayName });
+
+    // const userSnapshot = yield getDoc(userRef);
+
+    // yield put(signupSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
+
+    // supabase
+    const { data, error } = yield supabase.auth.signUp({
+      password,
       email,
-      password
+      options: {
+        data: {
+          displayName,
+        },
+      },
+    });
+
+    if (error) throw error;
+
+    yield put(
+      signupSuccess({
+        user: data.user,
+      })
     );
-
-    const userRef = yield call(createUserProfile, user, { displayName });
-
-    const userSnapshot = yield getDoc(userRef);
-
-    yield put(signupSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
   } catch (err) {
     yield put(signupFailure(err));
   }
@@ -123,7 +177,7 @@ function* onSignupStart() {
 }
 
 // Signin user after registeration
-function* signinAfterSignup({ user }) {
+function* signinAfterSignup({ payload: { user } }) {
   yield put(signinSuccess(user));
 }
 
@@ -135,7 +189,7 @@ export default function* userSagas() {
   yield all([
     call(onGoogleSigninStart),
     call(onEmailSigninStart),
-    call(onCheckUserSession),
+    call(onCheckCurrentUser),
     call(onSignoutStart),
     call(onSignupStart),
     call(onSignupSuccess),

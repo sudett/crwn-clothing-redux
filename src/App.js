@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
-import { checkUserSession } from "./redux/user/user.actions";
+import { setCurrentUser } from "./redux/user/user.actions";
 
 import Header from "./components/header/header.component";
 import HomePage from "./pages/home-page/home-page.component";
@@ -17,39 +17,52 @@ import ContactPage from "./pages/contact-page/contact-page.component";
 
 import "./App.css";
 import "./global-styles.scss";
+import supabase from "./supabase/supabase";
 
-function App({ currentUser, checkUserSession }) {
-  // useEffect(() => {
-  //   // Get auth state changes using subscription provided by firebase
-  //   const unSubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-  //     if (!userAuth) return setCurrentUser(userAuth);
-
-  //     // Store user in db
-  //     const userRef = await createUserProfile(userAuth);
-
-  //     // Store user in app
-  //     firebase.onSnapshot(userRef, (snapshot) => {
-  //       setCurrentUser({
-  //         id: snapshot.id,
-  //         ...snapshot.data(),
-  //       });
-  //     });
-  //   });
-
-  //   // programatically add shop data to firestore once
-  //   // addCollectionAndDocuments(
-  //   //   "shop",
-  //   //   collections.map(({ title, items }) => ({ title, items }))
-  //   // );
-
-  //   // Close subscription to prevent memory leaks
-  //   return () => unSubscribeFromAuth();
-  // }, [setCurrentUser]);
-
+function App({ currentUser, setCurrentUser }) {
   useEffect(() => {
-    // Get user auth state using saga
-    checkUserSession();
-  }, [checkUserSession]);
+    // firebase
+    // Get auth state changes using subscription provided by firebase
+    // const unSubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+    //   if (!userAuth) return setCurrentUser(userAuth);
+
+    //   // Store user in db
+    //   const userRef = await createUserProfile(userAuth);
+
+    //   // Store user in app
+    //   firebase.onSnapshot(userRef, (snapshot) => {
+    //     setCurrentUser({
+    //       id: snapshot.id,
+    //       ...snapshot.data(),
+    //     });
+    //   });
+    // });
+
+    // programatically add shop data to firestore once
+    // addCollectionAndDocuments(
+    //   "shop",
+    //   collections.map(({ title, items }) => ({ title, items }))
+    // );
+
+    // Close subscription to prevent memory leaks
+    // return () => unSubscribeFromAuth();
+
+    // supabase
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setCurrentUser(session?.user ?? null);
+    });
+
+    // listen fro changes on auth state change
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setCurrentUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      listener?.unsubscribe();
+    };
+  }, []);
 
   return (
     <>
@@ -76,7 +89,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchTpProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession()),
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchTpProps)(App);

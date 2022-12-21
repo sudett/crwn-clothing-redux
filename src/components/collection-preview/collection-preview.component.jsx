@@ -5,12 +5,12 @@ import CollectionItem from "../collection-item/collection-item.component";
 
 import "./collection-preview.styles.scss";
 
-const CollectionPreview = ({ title, items, routeName }) => {
+const CollectionPreview = ({ title, items }) => {
   const { pathname } = useLocation();
 
   return (
     <div className="collection__preview">
-      <Link to={`${pathname}/${routeName}`}>
+      <Link to={`${pathname}/${title}`}>
         <h2 className="collection__title">{title}</h2>
       </Link>
       <div className="collection__items">
